@@ -64,7 +64,7 @@ class InstRequest:
         posts = InstRequest.all_posts(self, name)
         for post in posts:
             self.driver.get(post)
-            time.sleep(random.randrange(3, 5))
+            time.sleep(random.randrange(7, 10))
 
             likes_path = self.driver.find_element_by_xpath('/html/body/div[1]/section/main/div/div[1]/article/div['
                                                            '3]/section[2]/div/div[2]/a/span').text
@@ -99,6 +99,7 @@ def make_text(text) -> str:
         return f"User /{name} has {count} subscribers at the moment."
 
     if text.split(':')[0] == '/maxlikes':
+        return "ok"
         finder = InstRequest()
         name = text.split(':')[1]
         try:
@@ -130,7 +131,11 @@ def make_text(text) -> str:
             finder.close_driver()
             return f"I could not find a user /{name}"
         finder.close_driver()
-        return f"An account {name} has {len(urls)} posts:\n" + sum(urls)
+        ans = ""
+        for url in urls:
+            ans += url
+        return f"An account {name} has {len(urls)} posts:\n" + ans
+    return "I do not know this command line."
 
 
 @app.route("/", methods=["GET", "POST"])
